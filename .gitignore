@@ -1,0 +1,64 @@
+# Build artifacts
+bin/
+obj/
+
+# Visual Studio / Rider
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of PackageReference, but keep it if you have packages.config
+packages/
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# Rider cache
+.idea/
+
+# User-specific files
+*.swp
+*.bak
+
+# JetBrains Rider
+.idea/
+
+# dotnet tool cache
+.dotnet/
+
+# dotnet publish
+publish/
+
+# Rider project files
+*.sln.iml
+
+# Visual Studio Code debug output
+.vscode/.history
+
+# coverage
+coverage/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Azure Pipelines
+.vscode/tasks.json
+
+# Ensure generated files stay out of source control
+*.generated.cs
