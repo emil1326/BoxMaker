@@ -14,10 +14,32 @@ namespace BoxMaker.core
             Padding = padding;
 
             // Normalize once and calculate dimensions before building the padded text.
-            var normalizedText = TH.NormalizeString(text);
-            Height = TH.GetStringHeight(normalizedText) + padding * 2;
-            Width = TH.GetStringWidth(normalizedText) + padding * 2 + 2;
-            Text = TH.PadText(normalizedText, padding);
+            var s = TH.NormalizeString(text);
+            s = TH.PadText(s, padding);
+            s = EncloseWithBorders(s);
+            Height = TH.GetStringHeight(s) + padding * 2;
+            Width = TH.GetStringWidth(s) + padding * 2 + 2;
+
+            Text = s;
+        }
+
+        string EncloseWithBorders(string text)
+        {
+            return DoLineTop() + DoSides(text) + DoLineTop();
+        }
+        string DoSides(string text)
+        {
+            var lines = text.Split('\n');
+            string result = string.Empty;
+            foreach (var line in lines)
+            {
+                result += $"|{line}|\n";
+            }
+            return result;
+        }
+        string DoLineTop()
+        {
+            return new string('-', Width) + "\n";
         }
 
         public string GetText()
