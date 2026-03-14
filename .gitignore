@@ -9,9 +9,6 @@ obj/
 *.userosscache
 *.sln.docstates
 
-# VS Code
-.vscode/
-
 # NuGet
 *.nupkg
 # The packages folder can be ignored because of PackageReference, but keep it if you have packages.config

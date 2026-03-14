@@ -1,0 +1,13 @@
+{
+    "editor.semanticHighlighting.enabled": true,
+    "files.associations": {
+        "*.cs": "csharp",
+        "*.csx": "csharp"
+    },
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "chat.tools.terminal.autoApprove": {
+        "dotnet build": true
+    }
+}

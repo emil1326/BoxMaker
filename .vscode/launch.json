@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: Launch BoxMaker",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-boxmaker",
+            "program": "${workspaceFolder}/BoxMaker/bin/Debug/net10.0/BoxMaker.dll",
+            "cwd": "${workspaceFolder}/BoxMaker",
+            "console": "externalTerminal",
+            "stopAtEntry": false,
+            "justMyCode": true,
+            "internalConsoleOptions": "neverOpen"
+        }
+    ]
+}
