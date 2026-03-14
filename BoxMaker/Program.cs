@@ -4,6 +4,7 @@
 
 string text = "Hello, World!";
 Console.WriteLine(Box(text,1));
+Console.WriteLine(ComboHorizontal(1, Box(text, 1), Box("Another box", 2)));
 
 // Boite b = new ();
 // Console.WriteLine(b);

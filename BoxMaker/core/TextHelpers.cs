@@ -19,7 +19,7 @@ namespace BoxMaker.core
                 return 0;
 
             var normalized = NormalizeString(text);
-            return normalized.Split('\n').Length;
+            return SplitSafe(normalized).Length;
         }
         public static int GetStringWidth(string text)
         {
@@ -27,7 +27,7 @@ namespace BoxMaker.core
                 return 0;
 
             var normalized = NormalizeString(text);
-            var lines = normalized.Split('\n');
+            var lines = SplitSafe(normalized);
             int maxWidth = 0;
             foreach (var line in lines)
             {
@@ -53,7 +53,7 @@ namespace BoxMaker.core
         {
             text = NormalizeString(text);
 
-            var lines = text.Split('\n');
+            var lines = SplitSafe(text);
             string paddedText = GetMultiple(GetEmptyLine(GetStringWidth(text) + padding * 2) + "\n", padding); // Start with a newline for top padding
 
             foreach (string line in lines)
@@ -64,6 +64,17 @@ namespace BoxMaker.core
             paddedText += GetMultiple(GetEmptyLine(GetStringWidth(text) + padding * 2) + "\n", padding); // Add bottom padding
 
             return paddedText;
+        }
+        public static string[] SplitSafe(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return new string[0];
+
+            var s = text.Split('\n');
+            if (s[^1] == string.Empty)
+                s = s[..^1];
+
+            return s;
         }
     }
 }

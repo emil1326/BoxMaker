@@ -8,5 +8,8 @@ namespace BoxMaker.core
         /// </summary>
         public static string Box(string text, int padding = 0)
             => new Box(text, padding).GetText();
+
+        public static string ComboHorizontal(int padding = 0, params string[] texts)
+            => new ComboHorizontal(padding, texts).GetText();
     }
 }
