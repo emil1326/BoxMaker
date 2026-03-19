@@ -5,7 +5,7 @@
             "name": "C#: Launch BoxMaker",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-boxmaker",
+            "preLaunchTask": "dotnet: build",
             "program": "${workspaceFolder}/BoxMaker/bin/Debug/net10.0/BoxMaker.dll",
             "cwd": "${workspaceFolder}/BoxMaker",
             "console": "externalTerminal",

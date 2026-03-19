@@ -6,10 +6,16 @@ namespace BoxMaker.core
         /// Creates a Box and returns its rendered text.
         /// This allows calling <c>Box(text, padding)</c> as a shortcut.
         /// </summary>
-        public static string Box(string text, int padding = 0)
-            => new Box(text, padding).GetText();
+        // public static string Box(string text, int padding = 0)
+        //     => new Box(text, padding).GetText();
 
-        public static string ComboHorizontal(int padding = 0, params string[] texts)
-            => new ComboHorizontal(padding, texts).GetText();
+        public static Box Box(object text, int padding = 0)
+            => new([text], padding);
+
+        public static string Mono(string text, int padding = 0)
+            => new Box([text], padding).ToString();
+
+        public static string ComboHorizontal(int padding = 0, params object[] texts)
+            => new ComboHorizontal(padding, texts).ToString();
     }
 }

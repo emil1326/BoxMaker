@@ -46,6 +46,45 @@ namespace BoxMaker.core
             return maxWidth;
         }
 
+        public static string[] NormalizeLines(params string[] lines)
+        {
+            if (lines == null)
+                return [];
+
+            var normalized = new string[lines.Length];
+            for (int i = 0; i < lines.Length; i++)
+            {
+                normalized[i] = TextHelpers.NormalizeString(lines[i]);
+            }
+            return normalized;
+        }
+
+        public static string[] PadTexts(string[] texts, int padding)
+        {
+            if (texts == null)
+                return [];
+
+            var padded = new string[texts.Length];
+            for (int i = 0; i < texts.Length; i++)
+            {
+                padded[i] = TextHelpers.PadText(texts[i], padding);
+            }
+            return padded;
+        }
+
+        public static string[][] SplitSafe(string[] text)
+        {
+            if (text == null)
+                return [];
+
+            var lines = new string[text.Length][];
+            for (int i = 0; i < text.Length; i++)
+            {
+                lines[i] = TextHelpers.SplitSafe(text[i]);
+            }
+            return lines;
+        }
+
         /// <summary>
         /// Converts a multi-line string into a 2D char array.
         /// Each row corresponds to a line; shorter lines are padded with spaces.

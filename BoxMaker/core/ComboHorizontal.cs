@@ -1,27 +1,67 @@
 using System.Linq;
+using System.Text;
+using TH = BoxMaker.core.TextHelpers;
+using BH = BoxMaker.core.BoxHelpers;
 
 namespace BoxMaker.core
 {
     public class ComboHorizontal : Box
     {
-        char[,] Text2d = new char[0, 0];
+        private int _currentSegmentWidth;
 
-        public ComboHorizontal(int padding = 0, params string[] texts) : base()
+        public override int Height => BH.GetHeight(false, Texts);
+        public override int Width => BH.GetWidth(true, Texts) + Math.Max(0, Texts.Length - 1);
+        public ComboHorizontal(int padding = 0, params object[] texts)
+            : base(texts, padding)
         {
-            int height = BoxHelpers.GetHeight(false, texts);
-            int width = BoxHelpers.GetWidth(true, texts) - 3; // Subtract 3 to account for the borders of the first box.
-
-            Text2d = new char[height, width];
-
-            foreach (var text in texts)
-            {
-                Text2d = BoxHelpers.SuperImposeMatrices(Text2d, BoxHelpers.ToCharMatrix(text), BoxHelpers.GetWidth(false, text) - 1);
-            }
         }
 
-        public override string GetText()
+        protected override string EncloseWithBorders(string[] texts)
         {
-            return BoxHelpers.FromCharMatrix(Text2d);
+            string res = string.Empty;
+
+            res += HorizontalLine(texts);
+            res += VerticalLines(texts);
+            res += HorizontalLine(texts);
+
+            return res;
+        }
+
+        protected override string HorizontalLine(string[] text)
+        {
+            int width = text.Select(TH.GetStringWidth).Sum() + Math.Max(0, text.Length - 1);
+            return "+" + new string('-', width) + "+\n";
+        }
+
+        protected string VerticalLines(string[] boxes)
+        {
+            var splitBoxes = BH.SplitSafe(boxes);
+            var widths = boxes.Select(TH.GetStringWidth).ToArray();
+            var result = new StringBuilder();
+
+            for (int row = 0; row < Height; row++)
+            {
+                result.Append('|');
+
+                for (int col = 0; col < splitBoxes.Length; col++)
+                {
+                    string line = row < splitBoxes[col].Length ? splitBoxes[col][row] : string.Empty;
+                    _currentSegmentWidth = widths[col];
+                    result.Append(VerticalLine(line));
+
+                    if (col < splitBoxes.Length - 1)
+                        result.Append('|');
+                }
+
+                result.Append("|\n");
+            }
+
+            return result.ToString();
+        }
+
+        override protected string VerticalLine(string text)
+        {
+            return text.PadRight(_currentSegmentWidth);
         }
     }
 }
