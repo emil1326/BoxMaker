@@ -15,6 +15,9 @@ namespace BoxMaker.core
             : base(texts, padding)
         {
         }
+        public ComboHorizontal(params object[] boxes) : base(boxes, 0)
+        {
+        }
 
         protected override string EncloseWithBorders(string[] texts)
         {
@@ -35,9 +38,9 @@ namespace BoxMaker.core
 
         protected string VerticalLines(string[] boxes)
         {
-            var splitBoxes = BH.SplitSafe(boxes);
-            var widths = boxes.Select(TH.GetStringWidth).ToArray();
-            var result = new StringBuilder();
+            string[][] splitBoxes = BH.SplitSafe(boxes);
+            int[] widths = boxes.Select(TH.GetStringWidth).ToArray();
+            StringBuilder result = new StringBuilder();
 
             for (int row = 0; row < Height; row++)
             {
@@ -62,6 +65,43 @@ namespace BoxMaker.core
         override protected string VerticalLine(string text)
         {
             return text.PadRight(_currentSegmentWidth);
+        }
+
+        private string VerticalLinesWithoutBorders(string[] boxes)
+        {
+            string[][] splitBoxes = BH.SplitSafe(boxes);
+            int[] widths = boxes.Select(TH.GetStringWidth).ToArray();
+            StringBuilder result = new StringBuilder();
+
+            int actualHeight = 0;
+            foreach (string[] box in splitBoxes)
+            {
+                if (box.Length > actualHeight)
+                    actualHeight = box.Length;
+            }
+
+            for (int row = 0; row < actualHeight; row++)
+            {
+                for (int col = 0; col < splitBoxes.Length; col++)
+                {
+                    string line = row < splitBoxes[col].Length ? splitBoxes[col][row] : string.Empty;
+                    _currentSegmentWidth = widths[col];
+                    result.Append(VerticalLine(line));
+
+                    if (col < splitBoxes.Length - 1)
+                        result.Append('|');
+                }
+
+                result.Append('\n');
+            }
+
+            return result.ToString();
+        }
+
+        public override string[] GetPaddedTexts()
+        {
+            string[] lines = VerticalLinesWithoutBorders(Texts).TrimEnd('\n').Split('\n');
+            return lines;
         }
     }
 }

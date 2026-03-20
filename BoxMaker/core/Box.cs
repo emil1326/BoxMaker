@@ -16,6 +16,14 @@ namespace BoxMaker.core
         {
             Texts = [];
         }
+        public Box(string text)
+        {
+            Texts = [text];
+            Texts = BH.NormalizeLines(Texts);
+        }
+        public Box(Box box) : this([box], 0)
+        {
+        }
         public Box(object[] boxes, int padding = 0)
         {
             Padding = padding;
@@ -90,17 +98,21 @@ namespace BoxMaker.core
             for (int i = 0; i < texts.Length; i++)
             {
                 res += VerticalLine(texts[i]);
-                res += HorizontalLine(texts);
             }
+            res += HorizontalLine(texts);
             return res;
         }
         protected virtual string VerticalLine(string text)
         {
             var safeText = TH.SplitSafe(text);
             string result = string.Empty;
+            int width = BH.GetWidth(false, Texts);
 
             foreach (var line in safeText)
-                result += $"|{line}|\n";
+            {
+                string paddedLine = line.PadRight(width);
+                result += $"|{paddedLine}|\n";
+            }
 
             return result;
         }
