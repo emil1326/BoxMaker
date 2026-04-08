@@ -28,16 +28,17 @@ namespace BoxMaker.core
                 object box = Boxes[i];
                 string[] boxLines;
 
-                if (box is ComboHorizontal || box is ComboVertical)
+                if (box is Box b)
                 {
-                    // For Combo types, get their formatted output
-                    Box b = (Box)box;
-                    boxLines = b.GetPaddedTexts();
-                }
-                else if (box is Box b)
-                {
-                    // For regular Box, use Texts
-                    boxLines = b.Texts;
+                    // Get the padded text and split it properly
+                    string[] paddedTexts = b.GetPaddedTexts();
+                    List<string> splitLines = new List<string>();
+                    foreach (string text in paddedTexts)
+                    {
+                        string[] lines = TH.SplitSafe(text);
+                        splitLines.AddRange(lines);
+                    }
+                    boxLines = splitLines.ToArray();
                 }
                 else if (box is string str)
                 {
@@ -73,9 +74,19 @@ namespace BoxMaker.core
 
             for (int i = 0; i < allBoxLines.Count; i++)
             {
-                foreach (var line in allBoxLines[i])
+                foreach (string line in allBoxLines[i])
                 {
-                    result.Add(line.PadRight(maxWidth));
+                    // Check if this is a separator line (only dashes)
+                    if (line.Length > 0 && line.All(c => c == '-'))
+                    {
+                        // Extend the separator line with more dashes
+                        result.Add(new string('-', maxWidth));
+                    }
+                    else
+                    {
+                        // Regular line: pad with spaces
+                        result.Add(line.PadRight(maxWidth));
+                    }
                 }
 
                 if (i < allBoxLines.Count - 1)

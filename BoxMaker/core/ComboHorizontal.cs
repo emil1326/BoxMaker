@@ -100,8 +100,63 @@ namespace BoxMaker.core
 
         public override string[] GetPaddedTexts()
         {
-            string[] lines = VerticalLinesWithoutBorders(Texts).TrimEnd('\n').Split('\n');
-            return lines;
+            if (Boxes == null || Boxes.Length == 0)
+                return Texts;
+
+            // Collect the individual boxes' content
+            List<Box> boxList = new List<Box>();
+            foreach (var item in Boxes)
+            {
+                if (item is Box boxItem)
+                {
+                    // Check if this box contains a ComboHorizontal child
+                    if (boxItem.Boxes != null && boxItem.Boxes.Length == 1 && boxItem.Boxes[0] is ComboHorizontal ch)
+                    {
+                        // Extract the boxes from the inner ComboHorizontal
+                        if (ch.Boxes != null)
+                        {
+                            foreach (var subBox in ch.Boxes)
+                            {
+                                if (subBox is Box b)
+                                    boxList.Add(b);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Regular box or ComboVertical, add it directly
+                        boxList.Add(boxItem);
+                    }
+                }
+            }
+
+            // Get the string representation of each box
+            List<string> boxStrings = new List<string>();
+            foreach (Box box in boxList)
+            {
+                if (box is ComboVertical || box is ComboHorizontal)
+                {
+                    // For combo boxes, use GetPaddedTexts which returns properly formatted content
+                    string[] paddedTexts = box.GetPaddedTexts();
+                    string boxStr = string.Join("\n", paddedTexts);
+                    boxStrings.Add(boxStr);
+                }
+                else
+                {
+                    // For regular boxes, split the texts and use them directly
+                    List<string> lines = new List<string>();
+                    foreach (string text in box.Texts)
+                    {
+                        string[] splitLines = TH.SplitSafe(text);
+                        lines.AddRange(splitLines);
+                    }
+                    string boxStr = string.Join("\n", lines);
+                    boxStrings.Add(boxStr);
+                }
+            }
+
+            string[] result = VerticalLinesWithoutBorders(boxStrings.ToArray()).TrimEnd('\n').Split('\n');
+            return result;
         }
     }
 }

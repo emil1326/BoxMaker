@@ -23,8 +23,8 @@ ComboHorizontal ch = new (b0, b1);
 Console.WriteLine(new Box(ch));
 ComboVertical cvplus = new (new Box(cv), new Box(ch));
 Console.WriteLine(new Box(cvplus));
-//ComboHorizontal chplus = new (new Box(cv), new Box(ch));
-//Console.WriteLine(new Box(chplus));
+ComboHorizontal chplus = new (new Box(cv), new Box(ch));
+Console.WriteLine(new Box(chplus));
 // ComboVertical cvv = new (new Boite(chplus), new Boite("coucou"));
 // Console.WriteLine(new Boite(cvv));
 // Console.WriteLine(new Boite(
