@@ -100,7 +100,7 @@ namespace BoxMaker.core
 
             int height = lines.Length;
             int width = 0;
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
                 if (line.Length > width)
                     width = line.Length;

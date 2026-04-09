@@ -30,7 +30,7 @@ namespace BoxMaker.core
 
                 if (box is Box b)
                 {
-                    // Get the padded text and split it properly
+                    // get the padded text and split it properly
                     string[] paddedTexts = b.GetPaddedTexts();
                     List<string> splitLines = new List<string>();
                     foreach (string text in paddedTexts)
@@ -49,7 +49,7 @@ namespace BoxMaker.core
                     boxLines = [box?.ToString() ?? "Error: null object"];
                 }
 
-                // Split lines and filter out empty ones
+                // split lines and filter out empty
                 List<string> nonEmptyLines = new List<string>();
                 foreach (string line in boxLines)
                 {
@@ -57,8 +57,7 @@ namespace BoxMaker.core
                         nonEmptyLines.Add(line);
                 }
 
-                if (nonEmptyLines.Count > 0)
-                    allBoxLines.Add(nonEmptyLines);
+                allBoxLines.Add(nonEmptyLines);
             }
 
 
@@ -74,21 +73,23 @@ namespace BoxMaker.core
 
             for (int i = 0; i < allBoxLines.Count; i++)
             {
+                // add content lines from this box
                 foreach (string line in allBoxLines[i])
                 {
-                    // Check if this is a separator line (only dashes)
+                    // check if this is a separator line (only dashes)
                     if (line.Length > 0 && line.All(c => c == '-'))
                     {
-                        // Extend the separator line with more dashes
+                        // extend the separator line with more dashes
                         result.Add(new string('-', maxWidth));
                     }
                     else
                     {
-                        // Regular line: pad with spaces
+                        //regular line: pad with spaces
                         result.Add(line.PadRight(maxWidth));
                     }
                 }
 
+                // add separator between boxes 
                 if (i < allBoxLines.Count - 1)
                 {
                     result.Add(new string('-', maxWidth));

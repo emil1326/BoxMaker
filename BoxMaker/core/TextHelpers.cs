@@ -29,7 +29,7 @@ namespace BoxMaker.core
             var normalized = NormalizeString(text);
             var lines = SplitSafe(normalized);
             int maxWidth = 0;
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
                 if (line.Length > maxWidth)
                     maxWidth = line.Length;

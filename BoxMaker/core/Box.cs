@@ -6,7 +6,13 @@ namespace BoxMaker.core
     public class Box
     {
         public virtual int Height { get => BH.GetHeight(false, Texts); }
-        public virtual int Width { get => BH.GetWidth(false, Texts); }
+        public virtual int Width
+        {
+            get
+            {
+                return BH.GetWidth(false, Texts); 
+            }
+        }
         public int Padding { get; set; }
         public int MaxPadding => GetMaxPadding(Boxes);
         public virtual object[] Boxes { get; set; } = [];
@@ -69,7 +75,7 @@ namespace BoxMaker.core
                 return 0;
 
             int maxPadding = 0;
-            foreach (var item in boxes)
+            foreach (object item in boxes)
             {
                 if (item is Box box)
                 {
@@ -104,14 +110,23 @@ namespace BoxMaker.core
         }
         protected virtual string VerticalLine(string text)
         {
-            var safeText = TH.SplitSafe(text);
+            string[] safeText = TH.SplitSafe(text);
             string result = string.Empty;
             int width = BH.GetWidth(false, Texts);
 
-            foreach (var line in safeText)
+            // une ligne si vide
+            if (safeText.Length == 0)
             {
-                string paddedLine = line.PadRight(width);
+                string paddedLine = string.Empty.PadRight(width);
                 result += $"|{paddedLine}|\n";
+            }
+            else
+            {
+                foreach (string line in safeText)
+                {
+                    string paddedLine = line.PadRight(width);
+                    result += $"|{paddedLine}|\n";
+                }
             }
 
             return result;
@@ -119,6 +134,11 @@ namespace BoxMaker.core
         protected virtual string HorizontalLine(string[] text)
         {
             int width = BH.GetWidth(false, text);
+            // If wrapping a combo box with width 0, use the combo's Width property
+            if (width == 0 && Boxes != null && Boxes.Length == 1 && Boxes[0] is Box innerBox)
+            {
+                width = innerBox.Width;
+            }
             string res = string.Empty;
             res += '+';
             res += new string('-', width);

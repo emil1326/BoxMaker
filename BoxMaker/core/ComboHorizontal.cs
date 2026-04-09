@@ -10,7 +10,17 @@ namespace BoxMaker.core
         private int _currentSegmentWidth;
 
         public override int Height => BH.GetHeight(false, Texts);
-        public override int Width => BH.GetWidth(true, Texts) + Math.Max(0, Texts.Length - 1);
+        public override int Width
+        {
+            get
+            {
+                int width = BH.GetWidth(true, Texts) + Math.Max(0, Texts.Length - 1);
+                // at least the separator width if there are multiple boxes
+                if (width == 0 && Boxes != null && Boxes.Length > 1)
+                    return Boxes.Length - 1; 
+                return width;
+            }
+        }
         public ComboHorizontal(int padding = 0, params object[] texts)
             : base(texts, padding)
         {
@@ -32,7 +42,10 @@ namespace BoxMaker.core
 
         protected override string HorizontalLine(string[] text)
         {
-            int width = text.Select(TH.GetStringWidth).Sum() + Math.Max(0, text.Length - 1);
+            int width = BH.GetWidth(false, text);
+            //handles empty combo boxes that only have separators
+            if (width == 0 && Width > 0)
+                width = Width;
             return "+" + new string('-', width) + "+\n";
         }
 
@@ -103,19 +116,19 @@ namespace BoxMaker.core
             if (Boxes == null || Boxes.Length == 0)
                 return Texts;
 
-            // Collect the individual boxes' content
+            // collect individual boxes content
             List<Box> boxList = new List<Box>();
-            foreach (var item in Boxes)
+            foreach (object item in Boxes)
             {
                 if (item is Box boxItem)
                 {
-                    // Check if this box contains a ComboHorizontal child
+                    // check if box contains a ComboHorizontal child
                     if (boxItem.Boxes != null && boxItem.Boxes.Length == 1 && boxItem.Boxes[0] is ComboHorizontal ch)
                     {
-                        // Extract the boxes from the inner ComboHorizontal
+                        //extract boxes from the inner ComboHorizontal
                         if (ch.Boxes != null)
                         {
-                            foreach (var subBox in ch.Boxes)
+                            foreach (object subBox in ch.Boxes)
                             {
                                 if (subBox is Box b)
                                     boxList.Add(b);
@@ -124,26 +137,25 @@ namespace BoxMaker.core
                     }
                     else
                     {
-                        // Regular box or ComboVertical, add it directly
                         boxList.Add(boxItem);
                     }
                 }
             }
 
-            // Get the string representation of each box
+            // get string representation of each box
             List<string> boxStrings = new List<string>();
             foreach (Box box in boxList)
             {
                 if (box is ComboVertical || box is ComboHorizontal)
                 {
-                    // For combo boxes, use GetPaddedTexts which returns properly formatted content
+                    // for combo boxes get the padded text and split
                     string[] paddedTexts = box.GetPaddedTexts();
                     string boxStr = string.Join("\n", paddedTexts);
                     boxStrings.Add(boxStr);
                 }
                 else
                 {
-                    // For regular boxes, split the texts and use them directly
+                    // for regular boxes, split the texts and use them directly
                     List<string> lines = new List<string>();
                     foreach (string text in box.Texts)
                     {
@@ -156,6 +168,10 @@ namespace BoxMaker.core
             }
 
             string[] result = VerticalLinesWithoutBorders(boxStrings.ToArray()).TrimEnd('\n').Split('\n');
+            
+            if (result.Length == 1 && result[0] == "")
+                return [];
+            
             return result;
         }
     }
