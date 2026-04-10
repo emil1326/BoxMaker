@@ -58,4 +58,22 @@ Console.WriteLine(
    new Boite(new ComboVertical(new Boite(), new Boite("Yap")))
 );
 
+TestFabriques();
+
 Console.ReadLine();
+
+static void TestFabriques()
+{
+   Box p = BoxFactory.Créer("mono J'aime mon \"prof\"");
+   Console.WriteLine(new Boite(p));
+   p = BoxFactory.Créer("cv\nmono J'aime mon \"prof\"\nmono moi itou");
+   Console.WriteLine(new Boite(p));
+   p = BoxFactory.Créer("ch\nmono J'aime mon \"prof\"\nmono moi itou");
+   Console.WriteLine(new Boite(p));
+   p = BoxFactory.Créer(
+      "ch\ncv\nmono J'aime mon \"prof\"\nmono moi itou\nmono eh ben");
+   Console.WriteLine(new Boite(p));
+   p = BoxFactory.Créer(
+      "ch\ncv\nmc\nmono J'aime mon \"prof\"\nmono moi itou\nmono eh ben");
+   Console.WriteLine(new Boite(p));
+}
