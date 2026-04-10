@@ -1,22 +1,96 @@
-mono J'aime mon "prof"
+mono alpha
+
+mono    alpha
+
+mono beta with    many   spaces
+
+mono lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+
+mono    leading and trailing spaces    inside   text    only
+
+mono first line
+  second line with leading spaces preserved in content
+third line	with	tabs
+
+mono one line then another
+and a third line with    multiple    internal spaces
+the last line is intentionally very very very very very very long to exercise wrapping behavior
 
 cv
-mono J'aime mon "prof"
-mono moi itou
+mono top
+mono bottom
+
+cv
+mono short
+mono a much much much longer bottom line for width testing
 
 ch
-mono J'aime mon "prof"
-mono moi itou
+mono left
+mono right
+
+ch
+mono left with spaces   
+mono right with spaces   
 
 ch
 cv
-mono J'aime mon "prof"
-mono moi itou
-mono eh ben
+mono top
+mono bottom
+mono right
+
+cv
+ch
+mono left
+mono right
+mono bottom
+
+cv
+mono alpha
+mono beta
+mono gamma
 
 ch
+cv
+mono top
+mono bottom
+cv
+mono left
+mono right
+
+ch
+cv
+mono top
+mono bottom
+ch
+mono left
+mono right
+
+mc
+mono wrapped
+
+mc
+cv
+mono top
+mono bottom
+
+ch
+mc
+mono wrapped
+mono side
+
 cv
 mc
-mono J'aime mon "prof"
-mono moi itou
-mono eh ben
+mono wrapped
+ch
+mono left
+mono right
+
+ch
+mono a
+mono b
+
+cv
+mono x
+mono y
+
+mono omega
