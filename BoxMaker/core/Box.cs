@@ -3,7 +3,7 @@ using BH = BoxMaker.core.BoxHelpers;
 
 namespace BoxMaker.core
 {
-    public class Box
+    public class Box : IVisitable<Box>
     {
         public virtual int Height { get => BH.GetHeight(false, Texts); }
         public virtual int Width
@@ -157,6 +157,25 @@ namespace BoxMaker.core
         public override string ToString()
         {
             return GetText();
+        }
+
+        public virtual void Accepter(IVisiteur<Box> viz)
+        {
+            viz.Entrer();
+            viz.Visiter(this, () =>
+            {
+                if (Boxes != null)
+                {
+                    foreach (object box in Boxes)
+                    {
+                        if (box is Box b)
+                        {
+                            b.Accepter(viz);
+                        }
+                    }
+                }
+            });
+            viz.Sortir();
         }
     }
 }
