@@ -1,11 +1,39 @@
-﻿using BoxMaker.core;
-using Boite = BoxMaker.core.Box;
+﻿using Boites;
+using Boite = Boites.Box;
+using Box = Boites.Box;
+using System.IO;
+
+// If a .test file is passed as first argument, run the standardized test-loop and exit.
+if (args.Length > 0)
+{
+   var coul = new Couleureur();
+   var mes = new Mesureur();
+   using (var sr = new StreamReader(args[0]))
+      for (var s = LireBoite(sr); s != null; s = LireBoite(sr))
+         Tester(FabriqueBoites.Créer(s), coul, mes);
+
+   static string LireBoite(StreamReader sr)
+   {
+      string s = sr.ReadLine();
+      while (s != null && s.Trim().Length == 0)
+         s = sr.ReadLine();
+      if (s != null)
+         for (string ligne = sr.ReadLine(); ligne != null && ligne.Trim().Length != 0; ligne = sr.ReadLine())
+            s += $"\n{ligne}";
+      return s;
+   }
+
+   static void Tester(Box b, params IVisiteur<Box>[] viz)
+   {
+      Console.Write(b);
+      foreach (var v in viz)
+         b.Accepter(v);
+   }
+
+   return;
+}
 
 // https://h-deb.ca/CLG/Cours/420KBK/boites-v0.html
-
-string text = "Hello, World!";
-Console.WriteLine(Box(text,0));
-Console.WriteLine(ComboHorizontal(1, Box(text, 5), Box("a box", 2)));
 
 Boite b = new ();
 Console.WriteLine(b);
@@ -66,16 +94,16 @@ Console.ReadLine();
 
 static void TestFabriques()
 {
-   Box p = BoxFactory.Créer("mono J'aime mon \"prof\"");
+   Box p = FabriqueBoites.Créer("mono J'aime mon \"prof\"");
    Console.WriteLine(new Boite(p));
-   p = BoxFactory.Créer("cv\nmono J'aime mon \"prof\"\nmono moi itou");
+   p = FabriqueBoites.Créer("cv\nmono J'aime mon \"prof\"\nmono moi itou");
    Console.WriteLine(new Boite(p));
-   p = BoxFactory.Créer("ch\nmono J'aime mon \"prof\"\nmono moi itou");
+   p = FabriqueBoites.Créer("ch\nmono J'aime mon \"prof\"\nmono moi itou");
    Console.WriteLine(new Boite(p));
-   p = BoxFactory.Créer(
+   p = FabriqueBoites.Créer(
       "ch\ncv\nmono J'aime mon \"prof\"\nmono moi itou\nmono eh ben");
    Console.WriteLine(new Boite(p));
-   p = BoxFactory.Créer(
+   p = FabriqueBoites.Créer(
       "ch\ncv\nmc\nmono J'aime mon \"prof\"\nmono moi itou\nmono eh ben");
    Console.WriteLine(new Boite(p));
 }

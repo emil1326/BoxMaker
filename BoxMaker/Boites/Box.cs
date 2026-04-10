@@ -1,7 +1,7 @@
-using TH = BoxMaker.core.TextHelpers;
-using BH = BoxMaker.core.BoxHelpers;
+using TH = Boites.TextHelpers;
+using BH = Boites.BoxHelpers;
 
-namespace BoxMaker.core
+namespace Boites
 {
     public class Box : IVisitable<Box>
     {
@@ -164,6 +164,7 @@ namespace BoxMaker.core
             viz.Entrer();
             viz.Visiter(this, () =>
             {
+                viz.Entrer();
                 if (Boxes != null)
                 {
                     foreach (object box in Boxes)
@@ -174,6 +175,7 @@ namespace BoxMaker.core
                         }
                     }
                 }
+                viz.Sortir();
             });
             viz.Sortir();
         }

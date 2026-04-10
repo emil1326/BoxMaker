@@ -1,4 +1,4 @@
-namespace BoxMaker.core
+namespace Boites
 {
     static internal class BoxHelpers
     {

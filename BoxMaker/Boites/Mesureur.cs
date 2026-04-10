@@ -1,4 +1,4 @@
-namespace BoxMaker.core
+namespace Boites
 {
     // visitor that measures boxes and tracks the smallest and largest
     public class Mesureur : IVisiteur<Box>

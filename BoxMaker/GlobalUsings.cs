@@ -1,1 +1,1 @@
-global using static BoxMaker.core.BoxFactory;
+global using static Boites.FabriqueBoites;

@@ -1,4 +1,4 @@
-namespace BoxMaker.core
+namespace Boites
 {
     ///box that wraps another box, adding an outer border around it.
     public class MonoCombo : Box

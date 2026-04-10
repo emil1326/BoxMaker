@@ -1,4 +1,4 @@
-namespace BoxMaker.core
+namespace Boites
 {
     // interface for objects that can accept a visitor
     public interface IVisitable<T>

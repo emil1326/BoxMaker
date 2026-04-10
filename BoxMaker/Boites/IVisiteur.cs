@@ -1,4 +1,4 @@
-namespace BoxMaker.core
+namespace Boites
 {
     // interface for implementing visitor pattern.
     public interface IVisiteur<T>
